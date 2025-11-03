@@ -1,0 +1,37 @@
+<!--
+base.html
+----------
+This is the base layout used by all pages.
+It includes:
+  - Basic HTML structure
+  - Bootstrap link for quick styling
+  - A content block where other pages can add their content
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Hospital Management System</title>
+
+    <!-- Bootstrap CSS (for simple, ready-made styles) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-light">
+    <!-- Page Header -->
+    <div class="text-center mt-4">
+        <h3>Hospital Management System</h3>
+        <p class="text-muted">Manage your healthcare efficiently</p>
+    </div>
+
+    <!-- Main container -->
+    <div class="container mt-4">
+        <!-- Jinja2 block where each page adds its own content -->
+        {% block content %}{% endblock %}
+    </div>
+
+    <!-- Bootstrap JS (for tabs, buttons etc.) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
