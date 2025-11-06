@@ -24,6 +24,16 @@ It includes:
         <h3>Hospital Management System</h3>
         <p class="text-muted">Manage your healthcare efficiently</p>
     </div>
+    
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <div class="container mt-3">
+        {% for m in messages %}
+            <div class="alert alert-warning" role="alert">{{ m }}</div>
+        {% endfor %}
+        </div>
+    {% endif %}
+    {% endwith %}
 
     <!-- Main container -->
     <div class="container mt-4">

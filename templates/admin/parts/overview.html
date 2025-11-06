@@ -1,0 +1,73 @@
+<div class="container mt-4">
+  <div class="row text-center g-3">
+
+    <!-- Total Doctors -->
+    <div class="col-md-3 col-sm-6">
+      <div class="card shadow-sm border-0">
+        <div class="card-body">
+          <h6 class="text-muted">Total Doctors</h6>
+          <h3>{{ counts.doctors }}</h3>
+          <p class="text-muted small mb-0">Active doctors</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Total Patients -->
+    <div class="col-md-3 col-sm-6">
+      <div class="card shadow-sm border-0">
+        <div class="card-body">
+          <h6 class="text-muted">Total Patients</h6>
+          <h3>{{ counts.patients }}</h3>
+          <p class="text-muted small mb-0">Registered patients</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Total Appointments -->
+    <div class="col-md-3 col-sm-6">
+      <div class="card shadow-sm border-0">
+        <div class="card-body">
+          <h6 class="text-muted">Total Appointments</h6>
+          <h3>{{ counts.appointments }}</h3>
+          <p class="text-muted small mb-0">Upcoming</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Blacklisted Patients -->
+    <div class="col-md-3 col-sm-6">
+      <div class="card shadow-sm border-0">
+        <div class="card-body">
+          <h6 class="text-muted">Blacklisted</h6>
+          <h3>{{ counts.blacklisted }}</h3>
+          <p class="text-muted small mb-0">Restricted patients</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+<div class="container mt-4">
+
+  <h5>Departments</h5>
+  <p class="text-muted mb-3">Available specializations</p>
+
+  <div class="row g-3">
+    {% for dept in departments %}
+      <div class="col-md-6">
+        <div class="card border-0 shadow-sm">
+          <div class="card-body">
+            <h6 class="fw-semibold">{{ dept.department_name }}</h6>
+            <p class="text-muted small mb-1">
+              {{ dept.description or "No description available" }}
+            </p>
+            <p class="text-primary small mb-0">
+              {{ dept.doctors|length }} doctor(s)
+            </p>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+
+</div>

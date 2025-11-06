@@ -1,0 +1,67 @@
+{# 
+  This template extends your admin base layout.
+  It will show tabs for Overview, Doctors, Patients, and Appointments.
+  When the "Patients" tab is active, it shows the list of all patients,
+  along with search, delete, and blacklist/unblacklist features.
+#}
+
+{% extends "admin/admin_base.html" %}
+
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block content %}
+
+<!-- ================== NAV TABS ================== -->
+<!-- Left-aligned Bootstrap tabs for navigation -->
+<div class="mt-3 ms-3">
+  <ul class="nav nav-tabs">
+    <li class="nav-item">
+      {# If current role is 'overview', highlight that tab #}
+      <a class="nav-link {% if role == 'overview' %}active{% endif %}"
+         href="{{ url_for('admin_role_tab', role='overview') }}">Overview</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link {% if role == 'doctors' %}active{% endif %}"
+         href="{{ url_for('admin_role_tab', role='doctors') }}">Doctors</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link {% if role == 'patients' %}active{% endif %}"
+         href="{{ url_for('admin_role_tab', role='patients') }}">Patients</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link {% if role == 'appointments' %}active{% endif %}"
+         href="{{ url_for('admin_role_tab', role='appointments') }}">Appointments</a>
+    </li>
+  </ul>
+</div>
+
+<!-- ================== SEARCH BAR ================== -->
+
+<div class=" justify-content-center mt-3 mb-4" style="max-width:500px; margin-left:1rem;" >
+  <div class="mb-3">
+    <form method="get" action="{{ url_for('admin_role_tab', role='patients') }}" >
+      <div class="input-group">
+        <span class="input-group-text" style="background-color: #0d6efd;">🔍</span>
+        <input type="search" name="q"
+       value="{{ request.args.get('q','') }}"
+       class="form-control"
+       placeholder="Search by name, email, or phone..."
+       style="background-color: #c0c6c9;">
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="container mt-4">
+  {% if role == 'overview' %}
+    {% include 'admin/parts/overview.html' %}
+  {% elif role == 'doctors' %}
+    {% include 'admin/parts/doctors.html' %}
+  {% elif role == 'patients' %}
+    {% include 'admin/parts/patients.html' %}
+  {% elif role == 'appointments' %}
+    {% include 'admin/parts/appointments.html' %}
+  {% endif %}
+</div>
+
+{% endblock %}

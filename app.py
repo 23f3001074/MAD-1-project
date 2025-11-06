@@ -17,6 +17,8 @@ init_db(app)
 from controllers.routes import setup_routes
 setup_routes(app)
 
+from controllers.admin import setup_admin_routes
+setup_admin_routes(app)
 
 if __name__ == '__main__':
   app.run(debug=True)

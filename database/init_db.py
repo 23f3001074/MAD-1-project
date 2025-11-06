@@ -1,4 +1,4 @@
-from database.model import db, Admin
+from database.model import db, Admin, Department
 
 def init_db(app):
 
@@ -8,8 +8,23 @@ def init_db(app):
 
 
     # Create an admin user if it doesn't exist
-    admin = Admin.query.first()
+    admin = Admin.query.filter_by(username='admin@gmail.com').first()
     if not admin:
-      admin = Admin(username='Admin', password='admin123')
-      db.session.add(admin)
-      db.session.commit()
+        admin = Admin(username='admin@gmail.com', password='admin123')
+        db.session.add(admin)
+        db.session.commit()
+
+    # Predefined departments
+    default_departments = ['Cardiology', 'Neurology', 'Orthopedics', 'Pediatrics', 'Dermatology']
+
+    for dept_name in default_departments:
+        # Check if the department already exists
+        existing_dept = Department.query.filter_by(department_name=dept_name).first()
+        if not existing_dept:
+            new_dept = Department(department_name=dept_name, description=f'Description for {dept_name} department.And more details about services offered.')
+            db.session.add(new_dept)
+
+    # Commit once after all inserts
+    db.session.commit()
+
+

@@ -24,10 +24,7 @@ class Doctor(db.Model):
   email = db.Column(db.String(254), nullable=False, unique=True)
   password = db.Column(db.String(256), nullable=False)
   department_id = db.Column(db.Integer, db.ForeignKey('department.department_id'))  # dropdown values
-  phone_no = db.Column(db.String(15), nullable = False, unique=True)
-  degrees     = db.Column(db.String(150))   # comma-separated list or short text
   experience  = db.Column(db.Integer)      # years of experience (whole years)
-  about       = db.Column(db.Text)         # longer biography / description
 
   #relationship
   appointments = db.relationship('Appointment', backref='doctor', lazy=True)
@@ -59,6 +56,14 @@ class Department(db.Model):
 
   # relationship
   doctors = db.relationship('Doctor', backref='department', lazy=True)
+
+class Blacklist(db.Model):
+  id = db.Column(db.Integer, primary_key=True)
+  patient_id = db.Column(db.Integer, db.ForeignKey('patient.patient_id'), nullable=False)
+
+class Doctor_blacklist(db.Model):
+  id = db.Column(db.Integer, primary_key=True)
+  doctor_id = db.Column(db.Integer, db.ForeignKey('doctor.doctor_id'), nullable=False)
 
 
 

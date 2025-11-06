@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 
+
 <!-- Role Tabs (Admin / Doctor / Patient) -->
 <div class="d-flex justify-content-center mt-3">
   <ul class="nav nav-tabs">
@@ -45,12 +46,12 @@
 
           <div class="mb-3">
             <label for="email" class="form-label">Email</label>
-            <input class="form-control" id="email" name="email" type="email" placeholder="you@example.com" required>
+            <input class="form-control" id="email" name="email" type="email" placeholder="you@example.com" >
           </div>
 
           <div class="mb-3">
             <label for="password" class="form-label">Password</label>
-            <input id="password" name="password" type="password" class="form-control" placeholder="Enter password" required>
+            <input id="password" name="password" type="password" class="form-control" placeholder="Enter password" >
           </div>
 
           <div class="d-grid">
@@ -58,7 +59,7 @@
           </div>
         </form>
 
-        <p class="text-muted small mt-3 mb-0">Demo: john@email.com / patient123</p>
+        <p class="text-muted small mt-3 mb-0">Demo: {{role}}@gmail.com / {{role}}123</p>
 
       {% else %}
         <h5 class="card-title">Register as {{ role|capitalize }}</h5>
@@ -68,32 +69,32 @@
 
           <div class="mb-3">
             <label for="name" class="form-label">Full Name</label>
-            <input id="name" name="name" type="text" class="form-control" placeholder="Your full name" required>
+            <input id="full_name" name="full_name" type="text" class="form-control" placeholder="Your full name" required>
           </div>
 
           <div class="mb-3">
-            <label for="email_reg" class="form-label">Email</label>
-            <input id="email_reg" name="email" type="email" class="form-control" placeholder="you@example.com" required>
+            <label for="email" class="form-label">Email</label>
+            <input id="email" name="email" type="email" class="form-control" placeholder="you@example.com" required>
           </div>
 
           <div class="mb-3">
-            <label for="password_reg" class="form-label">Password</label>
-            <input id="password_reg" name="password" type="password" class="form-control" placeholder="Create a password" required>
+            <label for="password" class="form-label">Password</label>
+            <input id="password" name="password" type="password" class="form-control" placeholder="Create a password" required>
           </div>
 
           <div class="mb-3">
-            <label for="phone_reg" class="form-label">Phone Number</label>
-            <input id="phone_reg" name="phone" type="tel" class="form-control" pattern="[0-9]{10}" placeholder="10 digit phone number" required>
+            <label for="phone_no" class="form-label">Phone Number</label>
+            <input id="phone_no" name="phone_no" type="tel" class="form-control" pattern="[0-9]{10}" placeholder="10 digit phone number" required>
           </div>
 
           <div class="mb-3">
-            <label for="dob_reg" class="form-label">Date of Birth</label>
-            <input id="dob_reg" name="dob" type="date" class="form-control" required>
+            <label for="dob" class="form-label">Date of Birth</label>
+            <input id="dob" name="dob" type="date" class="form-control" required>
           </div>
 
           <div class="mb-3">
-            <label for="address_reg" class="form-label">Address</label>
-            <input id="address_reg" name="address" type="text" class="form-control" placeholder="Your address" required>
+            <label for="address" class="form-label">Address</label>
+            <input id="address" name="address" type="text" class="form-control" placeholder="Your address" required>
           </div>
 
           <div class="d-grid">

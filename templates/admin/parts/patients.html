@@ -1,0 +1,95 @@
+<div class="card rounded-3 mb-3 p-3">
+  <h5 class="mb-1">Patient Management</h5>
+  <p class="text-muted mb-0">View and manage registered patients</p>
+</div>
+
+
+
+<!-- ================== PATIENT LIST ================== -->
+<div class="list-group">
+
+  {# Check if any patients exist #}
+  {% if patients %}
+
+    {# Ensure blacklisted_ids list exists (so template doesn’t error if empty) #}
+    {% if blacklisted_ids %}
+      {% set blacklisted_ids = blacklisted_ids | map(attribute='patient_id') | list %}
+    {% else %}
+      {% set blacklisted_ids = [] %}
+    {% endif %}
+
+    
+    {# Loop through every patient record #}
+    {% for p in patients %}
+
+      {% set pid = p.patient_id %}
+
+
+      <!-- Each patient is shown as a card-like list item -->
+      <div class="list-group-item list-group-item-action mb-3 rounded-3 shadow-sm 
+                  {% if pid in blacklisted_ids %}opacity-75{% endif %}">
+        <div class="d-flex justify-content-between align-items-start">
+
+          <!-- ========== LEFT SIDE: patient details ========== -->
+          <div>
+            <div class="d-flex align-items-center gap-2">
+              <!-- Patient name -->
+              <h6 class="mb-0">{{ p.full_name }}</h6>
+
+              {# Show small badge if patient is active #}
+              {% if p.status == 'active' %}
+                <span class="badge rounded-pill bg-dark text-white small">active</span>
+              {% endif %}
+
+              {# Show red badge if patient is blacklisted #}
+              {% if pid in blacklisted_ids %}
+                <span class="badge rounded-pill bg-danger text-white small">blacklisted</span>
+              {% endif %}
+            </div>
+
+            <!-- Patient email and phone -->
+            <div class="text-muted small mt-1">{{ p.email }}</div>
+            <div class="text-muted small">{{ p.phone_no }}</div>
+          </div>
+
+          <!-- ========== RIGHT SIDE: action buttons ========== -->
+          <div class="d-flex align-items-center gap-2">
+
+            <!-- View details button -->
+            <a href="{{ url_for('view_patient', patient_id=pid) }}"
+                class="btn btn-outline-secondary btn-sm">View</a>
+
+            <!-- Delete button (asks confirmation before deleting) -->
+            <form method="post"
+                  action="{{ url_for('delete_patient', patient_id=pid) }}"
+                  onsubmit="return confirm('Delete this patient?');"
+                  style="display:inline;">
+              {# Add CSRF token here if you use Flask-WTF: {{ csrf_token() }} #}
+              <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+            </form>
+
+            <!-- Blacklist / Unblacklist toggle buttons -->
+            {% if pid in blacklisted_ids %}
+              <!-- If blacklisted: show "Unblacklist" button -->
+              <form method="post" action="{{ url_for('unblacklist_patient', patient_id=pid) }}" style="display:inline;">
+                {# Add CSRF token if applicable #}
+                <button type="submit" class="btn btn-success btn-sm">Unblacklist</button>
+              </form>
+            {% else %}
+              <!-- If not blacklisted: show "Blacklist" button -->
+              <form method="post" action="{{ url_for('blacklist_patient', patient_id=pid) }}" style="display:inline;">
+                {# Add CSRF token if applicable #}
+                <button type="submit" class="btn btn-outline-secondary btn-sm">Blacklist</button>
+              </form>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+
+    {% endfor %}
+
+  {% else %}
+    <!-- If no patients found -->
+    <div class="alert alert-secondary">No patients found.</div>
+  {% endif %}
+</div>
