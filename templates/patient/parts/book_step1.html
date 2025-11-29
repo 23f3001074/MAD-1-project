@@ -1,0 +1,12 @@
+<h4>Select Department</h4>
+
+<form method="post" action="{{ url_for('patient_book') }}">
+  <input type="hidden" name="step" value="1">
+  <select name="department" class="form-select mb-3" required>
+    <option value="">-- Select --</option>
+    {% for d in departments %}
+      <option value="{{ d.department_id }}">{{ d.department_name }}</option>
+    {% endfor %}
+  </select>
+  <button class="btn btn-primary">Next</button>
+</form>

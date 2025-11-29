@@ -20,7 +20,7 @@
       </a>
     </li>
     <li class="nav-item">
-      <a class="nav-link {% if role == 'teatment_history' %}active{% endif %}"
+      <a class="nav-link {% if role == 'treatment_history' %}active{% endif %}"
          href="{{ url_for('patient_role_tab', role='treatment_history') }}">
         Treatment History
       </a>
@@ -39,7 +39,7 @@
   {% if role == 'overview' %}
     {% include 'patient/parts/overview.html' %}
   {% elif role == 'book_appointment' %}
-    {% include 'patient/parts/book_appointment.html' %}
+    {% include 'patient/parts/book_step1.html' %}
   {% elif role == 'treatment_history' %}
     {% include 'patient/parts/treatment_history.html' %}
   {% elif role == 'profile' %}

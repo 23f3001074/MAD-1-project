@@ -1,0 +1,43 @@
+{# templates/patient/parts/treatment_history.html #}
+<div class="card p-3 rounded-3">
+  <h5 class="mb-2">Treatment History</h5>
+  <p class="text-muted mb-3">Your past treatments (latest first)</p>
+
+  {% if treatments and treatments|length > 0 %}
+    <div class="list-group">
+      {% for t in treatments %}
+        {# t is a Treatment; appointment is available as relationship t.appointment #}
+        <div class="list-group-item mb-3 rounded" style="border:1px solid #eee;">
+          <div class="d-flex justify-content-between">
+            <div>
+              <div class="fw-semibold">
+                {{ t.appointment.date.strftime('%Y-%m-%d') if t.appointment and t.appointment.date else 'Unknown date' }}
+                at {{ t.appointment.time.strftime('%H:%M') if t.appointment and t.appointment.time else '' }}
+                <small class="text-muted ms-2">
+                  Dr. {{ t.appointment.doctor.full_name if t.appointment and t.appointment.doctor else '—' }}
+                  • {{ t.appointment.department if t.appointment else '' }}
+                </small>
+              </div>
+
+              <div class="mt-2">
+                <div><strong>Diagnosis:</strong> {{ t.diagnosis }}</div>
+                {% if t.prescription %}
+                  <div class="mt-1"><strong>Prescription:</strong> {{ t.prescription }}</div>
+                {% endif %}
+                {% if t.note %}
+                  <div class="mt-1"><strong>Notes:</strong> {{ t.note }}</div>
+                {% endif %}
+              </div>
+            </div>
+
+            <div class="text-end text-muted small">
+              <!-- Optional: show when this record was created (if you have such field) -->
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="alert alert-info">No treatment history found.</div>
+  {% endif %}
+</div>

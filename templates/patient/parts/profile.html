@@ -1,0 +1,47 @@
+{# templates/patient/parts/profile.html - partial fragment (DO NOT extend here) #}
+<div class="card p-4 rounded-3">
+  <h5 class="mb-3">Edit Profile</h5>
+  <p class="text-muted">Update your personal information</p>
+
+  <form method="post" action="{{ url_for('patient_profile') }}">
+    {# If you used the combined patient_profile route, use that endpoint.
+       If you handle profile edits via patient_role_tab POST, change action accordingly. #}
+
+    <!-- Full Name (editable) -->
+    <div class="mb-3">
+      <label class="form-label">Full Name</label>
+      <input type="text" name="full_name" class="form-control"
+             value="{{ patient.full_name }}" required>
+    </div>
+
+    <!-- Email (read-only) -->
+    <div class="mb-3">
+      <label class="form-label">Email (Read-only)</label>
+      <input type="email" class="form-control" value="{{ patient.email }}" readonly>
+    </div>
+
+    <!-- Phone (editable) -->
+    <div class="mb-3">
+      <label class="form-label">Phone</label>
+      <input type="text" name="phone_no" class="form-control"
+             value="{{ patient.phone_no }}" required>
+    </div>
+
+    <!-- DOB (read-only) -->
+    <div class="mb-3">
+      <label class="form-label">Date of Birth (Read-only)</label>
+      <input type="date" class="form-control" value="{{ patient.dob.strftime('%Y-%m-%d') }}" readonly>
+    </div>
+
+    <!-- Address (editable) -->
+    <div class="mb-3">
+      <label class="form-label">Address</label>
+      <textarea name="address" class="form-control" rows="3" required>{{ patient.address }}</textarea>
+    </div>
+
+    <div class="d-grid">
+      <button type="submit" class="btn btn-dark">Save Changes</button>
+    </div>
+  </form>
+</div>
+ 

@@ -1,0 +1,25 @@
+{% extends "patient/patient_base.html" %}
+
+{% block content %}
+
+<h4>Select Doctor & Date</h4>
+
+<form method="post" action="{{ url_for('patient_book') }}">
+  <input type="hidden" name="step" value="2">
+  <input type="hidden" name="department" value="{{ dept_id }}">
+
+  <label>Doctor</label>
+  <select name="doctor" class="form-select mb-3" required>
+    {% for doc in doctors %}
+      <option value="{{ doc.doctor_id }}">{{ doc.full_name }}</option>
+    {% endfor %}
+  </select>
+
+  <label>Date</label>
+  <input type="date" name="date" class="form-control mb-3"
+       min="{{ today.strftime('%Y-%m-%d') }}" required>
+
+
+  <button class="btn btn-primary">Next</button>
+</form>
+{% endblock %}

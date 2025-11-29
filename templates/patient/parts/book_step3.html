@@ -1,0 +1,28 @@
+{% extends "patient/patient_base.html" %}
+
+{% block content %}
+
+<h4>Select Time Slot</h4>
+
+{% if slots %}
+<form method="post" action="{{ url_for('patient_book') }}">
+  <input type="hidden" name="step" value="3">
+  <input type="hidden" name="department" value="{{ dept_id }}">
+  <input type="hidden" name="doctor" value="{{ doctor_id }}">
+  <input type="hidden" name="date" value="{{ date_str }}">
+
+  {% for s in slots %}
+    <div class="form-check">
+      <input class="form-check-input" type="radio" name="time"
+             value="{{ s.strftime('%H:%M') }}" required>
+      <label class="form-check-label">{{ s.strftime('%H:%M') }}</label>
+    </div>
+  {% endfor %}
+
+  <button class="btn btn-success mt-3">Confirm Booking</button>
+</form>
+
+{% else %}
+  <div class="alert alert-info">No slots available.</div>
+{% endif %}
+{% endblock %}
