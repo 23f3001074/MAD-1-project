@@ -1,0 +1,38 @@
+{# templates/patient/parts/overview.html #}
+<div class="card p-3 rounded-3">
+  <h5 class="mb-2">My Appointments</h5>
+  <p class="text-muted mb-3">View and manage your appointments</p>
+
+  {% if appointments and appointments|length > 0 %}
+    <div class="list-group">
+      {% for appt in appointments %}
+        <div class="list-group-item mb-3 rounded d-flex justify-content-between align-items-center" style="border:1px solid #eee;">
+          <div>
+            <div class="d-flex align-items-center">
+              {# Show doctor name (appointment has doctor relationship) #}
+              <h6 class="mb-0">Dr. {{ appt.doctor.full_name if appt.doctor else 'Doctor' }}</h6>
+              <span class="badge bg-light text-dark ms-2">booked</span>
+            </div>
+
+            <div class="text-muted mt-2 small">
+              {{ appt.department }}<br>
+              {{ appt.date.strftime('%Y-%m-%d') }} at {{ appt.time.strftime('%H:%M') }}
+            </div>
+          </div>
+
+          <!-- Cancel button (simple POST form) -->
+          <div>
+            <form method="post"
+                  action="{{ url_for('patient_cancel_appointment', appointment_id=appt.appointment_id) }}"
+                  onsubmit="return confirm('Are you sure you want to cancel this appointment?');">
+              {# If using Flask-WTF/CSRF, add {{ csrf_token() }} here #}
+              <button type="submit" class="btn btn-sm btn-danger">✕ Cancel</button>
+            </form>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="alert alert-info">No Appointment's are Booked.</div>
+  {% endif %}
+</div>

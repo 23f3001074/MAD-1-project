@@ -23,6 +23,9 @@ setup_admin_routes(app)
 from controllers.doctors import setup_doctor_routes
 setup_doctor_routes(app)
 
+from controllers.patient import setup_patient_routes
+setup_patient_routes(app)
+
 if __name__ == '__main__':
   app.run(debug=True)
 

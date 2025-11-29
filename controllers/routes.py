@@ -46,9 +46,9 @@ def setup_routes(app):
                 else:  # patient
                     this_user = Patient.query.filter_by(email=email).first()
                     if this_user and this_user.password == password:
-                        session['user_id'] = this_user.username
+                        session['user_id'] = this_user.patient_id
                         session['role'] = 'patient'
-                        return redirect(url_for("dashboard", role=role))
+                        return redirect(url_for("patient_dashboard"))
                     flash("Incorrect email or password")
                     return redirect(url_for("role_tab", role=role, tab="login"))
 

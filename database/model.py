@@ -12,7 +12,7 @@ class Patient(db.Model):
   full_name = db.Column(db.String(64), nullable = False)
   email = db.Column(db.String(254), nullable=False, unique=True)
   password = db.Column(db.String(256), nullable=False)
-  phone_no = db.Column(db.String(15), nullable = False, unique=True)
+  phone_no = db.Column(db.String(15), nullable = False)
   dob = db.Column(db.Date, nullable=False)
   address = db.Column(db.Text, nullable=False)
 
