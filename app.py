@@ -20,6 +20,9 @@ setup_routes(app)
 from controllers.admin import setup_admin_routes
 setup_admin_routes(app)
 
+from controllers.doctors import setup_doctor_routes
+setup_doctor_routes(app)
+
 if __name__ == '__main__':
   app.run(debug=True)
 

@@ -1,0 +1,51 @@
+{# 
+  appointments.html 
+  ------------------
+  This file shows:
+    - The INNER NAV TABS for appointment status (Upcoming / Completed / Cancelled)
+    - The list of appointments (not included here)
+#}
+
+
+{# ----------------------------------------------- #}
+{# INNER NAV TABS → CONTROLS "status"              #}
+{# These tabs appear ONLY on the Appointments page #}
+{# They switch: upcoming / completed / cancelled   #}
+{# ----------------------------------------------- #}
+
+<div class="mt-3 ms-3">
+  <ul class="nav nav-tabs">
+
+    {# Upcoming appointments tab #}
+    <li class="nav-item">
+      <a class="nav-link {% if status == 'upcoming' %}active{% endif %}"
+         href="{{ url_for('doctor_role_tab', role='appointments', status='upcoming') }}">
+        Upcoming
+      </a>
+    </li>
+
+    {# Completed appointments tab #}
+    <li class="nav-item">
+      <a class="nav-link {% if status == 'completed' %}active{% endif %}"
+         href="{{ url_for('doctor_role_tab', role='appointments', status='completed') }}">
+        Completed
+      </a>
+    </li>
+
+    {# Cancelled appointments tab #}
+    <li class="nav-item">
+      <a class="nav-link {% if status == 'cancelled' %}active{% endif %}"
+         href="{{ url_for('doctor_role_tab', role='appointments', status='cancelled') }}">
+        Cancelled
+      </a>
+    </li>
+
+  </ul>
+</div>
+
+
+{# ----------------------------------------------- #}
+{# BELOW THIS, YOU SHOW THE ACTUAL APPOINTMENTS    #}
+{# Example:                                         #}
+{#   {% for a in appointments %} ... {% endfor %}   #}
+{# ----------------------------------------------- #}

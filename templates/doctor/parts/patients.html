@@ -1,0 +1,37 @@
+{# inside the visits loop in patient_history.html #}
+<tbody>
+  {% for v in visits %}
+    <tr>
+      <td>{{ v.date.strftime('%Y-%m-%d') if v.date else '-' }}</td>
+      <td>{{ v.time if v.time else '-' }}</td>
+      <td>{{ v.status.capitalize() if v.status else '-' }}</td>
+
+      {# show a short treatment summary (diagnosis) in the table row #}
+      <td>
+        {% set t = treatment_map.get(v.appointment_id) %}
+        {% if t %}
+          <strong>{{ t.diagnosis }}</strong>
+          {% if t.prescription %}
+            <div class="small text-muted">Rx: {{ t.prescription[:80] }}{% if t.prescription|length > 80 %}…{% endif %}</div>
+          {% endif %}
+        {% else %}
+          <span class="text-muted">No treatment recorded</span>
+        {% endif %}
+      </td>
+
+      <td class="text-end">
+        <a class="btn btn-sm btn-outline-primary" href="{{ url_for('view_appointment', appointment_id=v.appointment_id) }}">View</a>
+      </td>
+    </tr>
+
+    {# Optional: a second compact row with the full treatment note (keep minimal) #}
+    {% if t and t.note %}
+      <tr class="table-active">
+        <td colspan="5" class="small text-muted">
+          <strong>Note:</strong> {{ t.note }}
+        </td>
+      </tr>
+    {% endif %}
+  {% endfor %}
+</tbody>
+

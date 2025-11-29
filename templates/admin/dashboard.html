@@ -37,9 +37,9 @@
 
 <!-- ================== SEARCH BAR ================== -->
 
-<div class=" justify-content-center mt-3 mb-4" style="max-width:500px; margin-left:1rem;" >
+<!-- <div class=" justify-content-center mt-3 mb-4" style="max-width:500px; margin-left:1rem;" >
   <div class="mb-3">
-    <form method="get" action="{{ url_for('admin_role_tab', role='patients') }}" >
+    <form method="get" action="{{ url_for('admin_role_tab', role=role) }}" >
       <div class="input-group">
         <span class="input-group-text" style="background-color: #0d6efd;">🔍</span>
         <input type="search" name="q"
@@ -50,7 +50,7 @@
       </div>
     </form>
   </div>
-</div>
+</div> -->
 
 <div class="container mt-4">
   {% if role == 'overview' %}

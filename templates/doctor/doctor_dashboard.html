@@ -1,0 +1,41 @@
+{% extends "doctor/doctor_base.html" %}
+ 
+{% block title %}Doctor Dashboard{% endblock %}
+
+{% block content %}
+<h3>Welcome, Dr. {{ name }}</h3>
+
+<div class="mt-3 ms-3">
+  <ul class="nav nav-tabs">
+    <li class="nav-item">
+      <a class="nav-link {% if role == 'appointments' %}active{% endif %}"
+         href="{{ url_for('doctor_role_tab', role='appointments', status='upcoming') }}">
+        Appointments
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link {% if role == 'patients' %}active{% endif %}"
+         href="{{ url_for('doctor_role_tab', role='patients', status='upcoming') }}">
+        Patients
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link {% if role == 'availability' %}active{% endif %}"
+         href="{{ url_for('doctor_role_tab', role='availability', status='upcoming') }}">
+        Availability
+      </a>
+    </li>
+  </ul>
+</div>
+
+<div class="container mt-4">
+  {% if role == 'appointments' %}
+    {% include 'doctor/parts/appointments.html' %}
+  {% elif role == 'patients' %}
+    {% include 'doctor/parts/patients.html' %}
+  {% elif role == 'availability' %}
+    {% include 'doctor/parts/availability.html' %}
+  {% endif %}
+</div>
+
+{% endblock %}

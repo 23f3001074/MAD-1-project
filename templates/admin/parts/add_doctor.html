@@ -1,54 +1,78 @@
 {% extends "admin/admin_base.html" %}
 
-{% block title %}Add Doctor{% endblock %}
+{% block title %}
+  {{ "Edit Doctor" if mode == "edit" else "Add Doctor" }}
+{% endblock %}
 
 {% block content %}
 <div class="container mt-4" style="max-width: 600px;">
 
-  <!-- Page heading -->
-  <h4 class="mb-3 text-center">Add New Doctor</h4>
+  <!-- Heading -->
+  <h4 class="mb-3 text-center">
+    {{ "Edit Doctor" if mode == "edit" else "Add New Doctor" }}
+  </h4>
 
-  <!-- Doctor form -->
-  <form method="POST" action="{{ url_for('add_doctor') }}">
+  <!-- Reusable add/edit form -->
+  <form method="POST" action="{{ form_action }}">
 
     <!-- Full Name -->
     <div class="mb-3">
-      <label for="full_name" class="form-label">Full Name</label>
-      <input type="text" id="full_name" name="full_name" class="form-control" placeholder="Enter doctor's full name" required>
+      <label class="form-label">Full Name</label>
+      <input type="text" name="full_name" class="form-control"
+             placeholder="Enter doctor's full name"
+             value="{{ doctor.full_name if doctor else '' }}"
+             required>
     </div>
 
     <!-- Email -->
     <div class="mb-3">
-      <label for="email" class="form-label">Email</label>
-      <input type="email" id="email" name="email" class="form-control" placeholder="Enter email address" required>
+      <label class="form-label">Email</label>
+      <input type="email" name="email" class="form-control"
+             placeholder="Enter email address"
+             value="{{ doctor.email if doctor else '' }}"
+             required>
     </div>
 
     <!-- Password -->
     <div class="mb-3">
-      <label for="password" class="form-label">Password</label>
-      <input type="password" id="password" name="password" class="form-control" placeholder="Set doctor password" required>
+      <label class="form-label">
+        Password
+        {% if mode == "edit" %}(leave blank to keep old password){% endif %}
+      </label>
+      <input type="password" name="password" class="form-control"
+             placeholder="Set doctor password">
     </div>
 
-    <!-- Department (dropdown) -->
+    <!-- Department -->
     <div class="mb-3">
-      <label for="department_id" class="form-label">Department</label>
-      <select id="department_id" name="department_id" class="form-select" required>
+      <label class="form-label">Department</label>
+      <select name="department_id" class="form-select" required>
         <option value="">Select Department</option>
+
         {% for dept in departments %}
-          <option value="{{ dept.department_id }}">{{ dept.department_name }}</option>
+          <option value="{{ dept.department_id }}"
+            {% if doctor and doctor.department_id == dept.department_id %}
+                selected
+            {% endif %}>
+            {{ dept.department_name }}
+          </option>
         {% endfor %}
       </select>
     </div>
 
     <!-- Experience -->
     <div class="mb-3">
-      <label for="experience" class="form-label">Experience (in years)</label>
-      <input type="number" id="experience" name="experience" class="form-control" min="0" placeholder="Enter years of experience">
+      <label class="form-label">Experience (in years)</label>
+      <input type="number" name="experience" class="form-control" min="0"
+             placeholder="Enter years of experience"
+             value="{{ doctor.experience if doctor else '' }}">
     </div>
 
-    <!-- Submit button -->
+    <!-- Submit -->
     <div class="text-center">
-      <button type="submit" class="btn btn-primary px-4">Add Doctor</button>
+      <button type="submit" class="btn btn-primary px-4">
+        {{ "Save Changes" if mode == "edit" else "Add Doctor" }}
+      </button>
     </div>
 
   </form>

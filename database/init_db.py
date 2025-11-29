@@ -1,4 +1,5 @@
 from database.model import db, Admin, Department
+from sqlalchemy import text
 
 def init_db(app):
 
@@ -25,6 +26,9 @@ def init_db(app):
             db.session.add(new_dept)
 
     # Commit once after all inserts
+
+    
+
     db.session.commit()
 
 

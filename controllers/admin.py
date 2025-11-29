@@ -1,6 +1,8 @@
 from flask import render_template, request, redirect, url_for, flash, session
 from functools import wraps
 from database.model import db, Admin, Patient, Doctor, Appointment, Blacklist, Department, Doctor_blacklist  # adjust import
+from sqlalchemy import or_
+
 
 def admin_required(view_func):
     @wraps(view_func)
@@ -26,25 +28,51 @@ def setup_admin_routes(app):
     @app.route("/admin/dashboard/<role>")
     @admin_required
     def admin_role_tab(role):
-        # validate role to avoid invalid values
+        # allowed tabs
         valid_roles = ('overview', 'doctors', 'patients', 'appointments')
         if role not in valid_roles:
             flash('Invalid tab.')
             return redirect(url_for('admin_role_tab', role='overview'))
 
-        # load any tab-specific data here
-        context = {'role': role}
+        # search term (only used for doctors/patients)
+        q = request.args.get('q', '').strip()
+        like = f"%{q}%"
+
+        context = {'role': role, 'q': q}
+
         if role == 'doctors':
-            context['doctors'] = Doctor.query.all()
-            context['doctor_blacklisted_ids'] = Doctor_blacklist.query.all()
+            # search doctors by name or email (only if q present)
+            query = Doctor.query
+            if q:
+                query = query.filter(
+                    or_(
+                        Doctor.full_name.ilike(like),
+                        Doctor.email.ilike(like)
+                    )
+                )
+            context['doctors'] = query.order_by(Doctor.full_name).all()
             context['departments'] = Department.query.all()
+            context['doctor_blacklisted_ids'] = Doctor_blacklist.query.all()
+
         elif role == 'patients':
-            context['patients'] = Patient.query.all()
+            # search patients by name, email, or phone (only if q present)
+            query = Patient.query
+            if q:
+                query = query.filter(
+                    or_(
+                        Patient.full_name.ilike(like),
+                        Patient.email.ilike(like),
+                        Patient.phone_no.ilike(like)
+                    )
+                )
+            context['patients'] = query.order_by(Patient.full_name).all()
             context['blacklisted_ids'] = Blacklist.query.all()
+
         elif role == 'appointments':
+            # keep previous appointments behavior (no search)
             context['appointments'] = Appointment.query.order_by(Appointment.date.desc()).all()
+
         else:  # overview
-            # small summary counts for example
             context['counts'] = {
                 'doctors': Doctor.query.count(),
                 'patients': Patient.query.count(),
@@ -54,6 +82,7 @@ def setup_admin_routes(app):
             context['departments'] = Department.query.all()
 
         return render_template("admin/dashboard.html", **context)
+
     
 
 # -----------------------------------------------------------------------
@@ -177,7 +206,7 @@ def setup_admin_routes(app):
             return redirect(url_for("admin_role_tab", role="doctors"))
 
         departments = Department.query.all()
-        return render_template("admin/parts/add_doctor.html", departments=departments)
+        return render_template("admin/parts/add_doctor.html", departments=departments, mode='add')
     
     # ✅ Edit doctor
     @app.route("/admin/doctor/edit/<int:doctor_id>", methods=["GET", "POST"])
@@ -199,7 +228,7 @@ def setup_admin_routes(app):
             return redirect(url_for("admin_doctors"))
 
         departments = Department.query.all()
-        return render_template("admin/edit_doctor.html", doctor=doctor, departments=departments)
+        return render_template("admin/parts/add_doctor.html", doctor=doctor, departments=departments, mode='edit')
     
     # ✅ Delete doctor
     @app.route("/admin/doctor/delete/<int:doctor_id>", methods=["POST"])
