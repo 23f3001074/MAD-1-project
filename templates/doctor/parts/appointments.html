@@ -49,3 +49,51 @@
 {# Example:                                         #}
 {#   {% for a in appointments %} ... {% endfor %}   #}
 {# ----------------------------------------------- #}
+{# ---------------------------------------------- #}
+{#  Appointment List (Simple + Clean)             #}
+{# ---------------------------------------------- #}
+
+<div class="mt-3 ms-3">
+
+  {% if appointments %}
+    <div class="list-group">
+
+      {% for a in appointments %}
+        <div class="list-group-item d-flex justify-content-between">
+          
+          <div>
+            <strong>
+              {{ a.patient.full_name if a.patient else "Patient #" ~ a.patient_id }}
+            </strong>
+
+            <div class="text-muted small">
+              {{ a.date.strftime("%d %b %Y") }}
+              {% if a.start_time %}
+                - {{ a.start_time.strftime("%H:%M") }}
+              {% endif %}
+            </div>
+
+            {% if a.reason %}
+              <div class="small">{{ a.reason }}</div>
+            {% endif %}
+          </div>
+
+          <div class="text-end">
+            <span class="badge bg-secondary text-capitalize">{{ a.status }}</span><br>
+
+            <a href="{{ url_for('doctor_patient_history', patient_id=a.patient_id) }}"
+               class="btn btn-sm btn-outline-primary mt-2">
+              History
+            </a>
+          </div>
+
+        </div>
+      {% endfor %}
+
+    </div>
+
+  {% else %}
+    <div class="alert alert-info">No appointments found.</div>
+  {% endif %}
+
+</div>

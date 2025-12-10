@@ -65,11 +65,19 @@ def setup_doctor_routes(app):
 
         if role == "appointments":
             if status == "upcoming":
-                appointments = Appointment.query.filter_by(doctor_id=doctor_id, status="upcoming").order_by(Appointment.date.asc()).all()
+                # earliest upcoming first
+                appointments = Appointment.query.filter_by(
+                    doctor_id=doctor_id, status="booked"
+                ).order_by(Appointment.date.asc(), Appointment.time.asc()).all()
             elif status == "completed":
-                appointments = Appointment.query.filter_by(doctor_id=doctor_id, status="completed").order_by(Appointment.date.desc()).all()
+                # most recent completed first
+                appointments = Appointment.query.filter_by(
+                    doctor_id=doctor_id, status="completed"
+                ).order_by(Appointment.date.desc(), Appointment.time.desc()).all()
             else:  # cancelled
-                appointments = Appointment.query.filter_by(doctor_id=doctor_id, status="cancelled").order_by(Appointment.date.desc()).all()
+                appointments = Appointment.query.filter_by(
+                    doctor_id=doctor_id, status="cancelled"
+                ).order_by(Appointment.date.desc(), Appointment.time.desc()).all()
 
             context["appointments"] = appointments
 
